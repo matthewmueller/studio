@@ -27,14 +27,13 @@ import { useLocalStorage, useMountedState } from "react-use";
 import { useShallowMemo } from "@foxglove/hooks";
 import Logger from "@foxglove/log";
 import { AppSetting } from "@foxglove/studio-base/AppSetting";
-import OsContextSingleton from "@foxglove/studio-base/OsContextSingleton";
 import { MessagePipelineProvider } from "@foxglove/studio-base/components/MessagePipeline";
 import { useAnalytics } from "@foxglove/studio-base/context/AnalyticsContext";
 import ConsoleApiContext from "@foxglove/studio-base/context/ConsoleApiContext";
 import { useCurrentLayoutSelector } from "@foxglove/studio-base/context/CurrentLayoutContext";
 import PlayerSelectionContext, {
+  DataSource,
   PlayerSelection,
-  PlayerSourceDefinition,
 } from "@foxglove/studio-base/context/PlayerSelectionContext";
 import { useUserNodeState } from "@foxglove/studio-base/context/UserNodeStateContext";
 import { useAppConfigurationValue } from "@foxglove/studio-base/hooks/useAppConfigurationValue";
@@ -43,16 +42,11 @@ import { usePrompt } from "@foxglove/studio-base/hooks/usePrompt";
 import useWarnImmediateReRender from "@foxglove/studio-base/hooks/useWarnImmediateReRender";
 import AnalyticsMetricsCollector from "@foxglove/studio-base/players/AnalyticsMetricsCollector";
 import OrderedStampPlayer from "@foxglove/studio-base/players/OrderedStampPlayer";
-import Ros2Player from "@foxglove/studio-base/players/Ros2Player";
 import UserNodePlayer from "@foxglove/studio-base/players/UserNodePlayer";
 import { BuildPlayerOptions } from "@foxglove/studio-base/players/buildPlayer";
 import { Player } from "@foxglove/studio-base/players/types";
-import { getLocalRosbag2Descriptor } from "@foxglove/studio-base/randomAccessDataProviders/standardDataProviderDescriptors";
-import ConsoleApi from "@foxglove/studio-base/services/ConsoleApi";
 import { UserNodes } from "@foxglove/studio-base/types/panels";
 import Storage from "@foxglove/studio-base/util/Storage";
-import { AppError } from "@foxglove/studio-base/util/errors";
-import { parseInputUrl } from "@foxglove/studio-base/util/url";
 
 const log = Logger.getLogger(__filename);
 
@@ -60,6 +54,7 @@ const DEFAULT_MESSAGE_ORDER = "receiveTime";
 const EMPTY_USER_NODES: UserNodes = Object.freeze({});
 const EMPTY_GLOBAL_VARIABLES: GlobalVariables = Object.freeze({});
 
+/*
 type FactoryOptions = {
   source: PlayerSourceDefinition;
   sourceOptions: Record<string, unknown>;
@@ -396,15 +391,16 @@ async function velodyneSource(options: FactoryOptions): Promise<Player | undefin
 
   return new VelodynePlayer({ port, metricsCollector: options.playerOptions.metricsCollector });
 }
+*/
 
-export default function PlayerManager({
-  children,
-  playerSources,
-}: PropsWithChildren<{
-  playerSources: PlayerSourceDefinition[];
-}>): JSX.Element {
+type PlayerManagerProps = {
+  playerSources: DataSource[];
+};
+
+export default function PlayerManager(props: PropsWithChildren<PlayerManagerProps>): JSX.Element {
+  const { children, playerSources } = props;
+
   useWarnImmediateReRender();
-  const consoleApi = useContext(ConsoleApiContext);
 
   const { setUserNodeDiagnostics, addUserNodeLogs, setUserNodeRosLib } = useUserNodeState();
   const userNodeActions = useShallowMemo({
@@ -462,6 +458,7 @@ export default function PlayerManager({
     player?.setUserNodes(userNodes ?? EMPTY_USER_NODES);
   }, [player, userNodes]);
 
+  /*
   // Based on a source type, prompt the user for additional input and return a function to build the
   // requested player.
   const lookupPlayerBuilderFactory = useCallback((definition: PlayerSourceDefinition) => {
@@ -486,22 +483,40 @@ export default function PlayerManager({
         return;
     }
   }, []);
+  */
 
-  const prompt = usePrompt();
+  //const prompt = usePrompt();
   const { addToast } = useToasts();
-  const storage = useMemo(() => new Storage(), []);
+  //const storage = useMemo(() => new Storage(), []);
 
-  const [rosHostname] = useAppConfigurationValue<string>(AppSetting.ROS1_ROS_HOSTNAME);
+  //const [rosHostname] = useAppConfigurationValue<string>(AppSetting.ROS1_ROS_HOSTNAME);
 
-  const [savedSource, setSavedSource] = useLocalStorage<PlayerSourceDefinition>(
-    "studio.playermanager.selected-source",
-  );
+  const [savedSource, setSavedSource] = useLocalStorage<{
+    id: string;
+    args?: Record<string, unknown>;
+  }>("studio.playermanager.selected-source.v2");
+
+  const [selectedSource, setSelectedSource] = useState<DataSource | undefined>();
 
   const selectSource = useCallback(
-    async (selectedSource: PlayerSourceDefinition, params?: Record<string, unknown>) => {
-      log.debug(`Select Source: ${selectedSource.name} ${selectedSource.type}`);
-      setSavedSource(selectedSource);
+    async (sourceId: string, args?: Record<string, unknown>) => {
+      log.debug(`Select Source: ${sourceId}`);
 
+      const foundSource = playerSources.find((source) => source.id === sourceId);
+      if (!foundSource) {
+        addToast(`Unknown data source: ${sourceId}`, {
+          appearance: "warning",
+        });
+        return;
+      }
+
+      // set the selected source
+      setSavedSource({
+        id: sourceId,
+        args,
+      });
+
+      /*
       try {
         metricsCollector.setProperty("player", selectedSource.type);
 
@@ -532,19 +547,9 @@ export default function PlayerManager({
           appearance: "error",
         });
       }
+      */
     },
-    [
-      addToast,
-      buildPlayerOptions,
-      consoleApi,
-      isMounted,
-      lookupPlayerBuilderFactory,
-      metricsCollector,
-      prompt,
-      rosHostname,
-      setSavedSource,
-      storage,
-    ],
+    [addToast, playerSources, setSavedSource],
   );
 
   // restore the saved source on first mount
@@ -558,6 +563,7 @@ export default function PlayerManager({
 
   const value: PlayerSelection = {
     selectSource,
+    selectedSource,
     availableSources: playerSources,
   };
 

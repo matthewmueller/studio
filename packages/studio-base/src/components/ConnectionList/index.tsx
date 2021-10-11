@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import { ActionButton, Icon, makeStyles, Text, useTheme } from "@fluentui/react";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useMemo } from "react";
 
 import {
   MessagePipelineContext,
@@ -11,10 +11,7 @@ import {
 } from "@foxglove/studio-base/components/MessagePipeline";
 import NotificationModal from "@foxglove/studio-base/components/NotificationModal";
 import ModalContext from "@foxglove/studio-base/context/ModalContext";
-import {
-  PlayerSourceDefinition,
-  usePlayerSelection,
-} from "@foxglove/studio-base/context/PlayerSelectionContext";
+import { usePlayerSelection } from "@foxglove/studio-base/context/PlayerSelectionContext";
 import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
 import { PlayerPresence, PlayerProblem } from "@foxglove/studio-base/players/types";
 import { colors } from "@foxglove/studio-base/util/sharedStyleConstants";
@@ -39,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ConnectionList(): JSX.Element {
-  const { selectSource, availableSources } = usePlayerSelection();
+  const { selectSource, selectedSource, availableSources } = usePlayerSelection();
   const confirm = useConfirm();
   const modalHost = useContext(ModalContext);
   const styles = useStyles();
@@ -51,7 +48,9 @@ export default function ConnectionList(): JSX.Element {
   const theme = useTheme();
 
   const onSourceClick = useCallback(
-    (source: PlayerSourceDefinition) => {
+    (source: string) => {
+      /*
+      // fixme - use different source click handler for disabled sources
       if (source.disabledReason != undefined) {
         void confirm({
           title: "Unsupported Connection",
@@ -61,6 +60,7 @@ export default function ConnectionList(): JSX.Element {
         });
         return;
       }
+      */
 
       selectSource(source);
     },
@@ -83,9 +83,17 @@ export default function ConnectionList(): JSX.Element {
     },
     [modalHost],
   );
+  const dataSourceUi = useMemo(() => {
+    if (!selectedSource) {
+      return;
+    }
+
+    return selectedSource.ui();
+  }, [selectedSource]);
 
   return (
     <>
+      {dataSourceUi}
       <Text
         block
         styles={{ root: { color: theme.palette.neutralTertiary, marginBottom: theme.spacing.l1 } }}
@@ -95,31 +103,9 @@ export default function ConnectionList(): JSX.Element {
           : playerName}
       </Text>
       {availableSources.map((source) => {
-        let iconName: RegisteredIconNames;
-        switch (source.type) {
-          case "ros1-local-bagfile":
-            iconName = "OpenFile";
-            break;
-          case "ros2-local-bagfile":
-            iconName = "OpenFolder";
-            break;
-          case "ros1-socket":
-          case "ros2-socket":
-            iconName = "studio.ROS";
-            break;
-          case "rosbridge-websocket":
-            iconName = "Flow";
-            break;
-          case "foxglove-data-platform":
-          case "ros1-remote-bagfile":
-            iconName = "FileASPX";
-            break;
-          case "velodyne-device":
-            iconName = "GenericScan";
-            break;
-        }
+        const iconName: RegisteredIconNames = source.iconName as RegisteredIconNames;
         return (
-          <div key={source.name}>
+          <div key={source.id}>
             <ActionButton
               styles={{
                 root: {
@@ -136,9 +122,9 @@ export default function ConnectionList(): JSX.Element {
                 iconName,
                 styles: { root: { "& span": { verticalAlign: "baseline" } } },
               }}
-              onClick={() => onSourceClick(source)}
+              onClick={() => onSourceClick(source.id)}
             >
-              {source.name}
+              {source.displayName}
               {source.badgeText && <span className={styles.badge}>{source.badgeText}</span>}
             </ActionButton>
           </div>
