@@ -1,16 +1,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
-import {
-  DefaultButton,
-  IconButton,
-  Link,
-  makeStyles,
-  Spinner,
-  Stack,
-  Toggle,
-  useTheme,
-} from "@fluentui/react";
+import { DefaultButton, IconButton, Spinner, Stack, Text, Toggle, useTheme } from "@fluentui/react";
 import { CloudOffline24Filled } from "@fluentui/react-icons";
 import { partition } from "lodash";
 import moment from "moment";
@@ -46,16 +37,6 @@ import helpContent from "./index.help.md";
 import showOpenFilePicker from "./showOpenFilePicker";
 import { debugBorder } from "./styles";
 
-const useStyles = makeStyles((theme) => ({
-  signInPrompt: {
-    fontSize: theme.fonts.smallPlus.fontSize,
-    padding: theme.spacing.s1,
-    backgroundColor: theme.palette.themeLighterAlt,
-    position: "sticky",
-    bottom: 0,
-  },
-}));
-
 export default function LayoutBrowser({
   currentDateForStorybook,
 }: React.PropsWithChildren<{
@@ -68,7 +49,6 @@ export default function LayoutBrowser({
   const prompt = usePrompt();
   const analytics = useAnalytics();
   const { openAccountSettings } = useWorkspace();
-  const styles = useStyles();
   const confirm = useConfirm();
   const { unsavedChangesPrompt, openUnsavedChangesPrompt } = useUnsavedChangesPrompt();
 
@@ -375,10 +355,10 @@ export default function LayoutBrowser({
   const importLayoutTooltip = useTooltip({ contents: "Import layout" });
 
   const layoutDebug = useContext(LayoutStorageDebuggingContext);
-
   const supportsSignIn = useContext(ConsoleApiContext) != undefined;
-  const showSignInPrompt = supportsSignIn && !layoutManager.supportsSharing;
-
+  const [showSignInPrompt, setShowSignInPrompt] = useState(
+    supportsSignIn && !layoutManager.supportsSharing,
+  );
   return (
     <SidebarContent
       title="Layouts"
@@ -456,10 +436,50 @@ export default function LayoutBrowser({
         </Stack.Item>
         <div style={{ flexGrow: 1 }} />
         {showSignInPrompt && (
-          <Stack.Item className={styles.signInPrompt}>
-            <Link onClick={openAccountSettings}>Sign in</Link> to sync layouts across multiple
-            devices, and share them with team members.
-          </Stack.Item>
+          <Stack
+            horizontal
+            verticalAlign="center"
+            styles={{
+              root: {
+                backgroundColor: theme.semanticColors.buttonBackgroundHovered,
+                position: "sticky",
+                bottom: 0,
+                cursor: "pointer",
+
+                ":hover, :focus": {
+                  backgroundColor: theme.semanticColors.buttonBackgroundPressed,
+                },
+              },
+            }}
+            tokens={{
+              padding: theme.spacing.m,
+              childrenGap: theme.spacing.m,
+            }}
+            onClick={openAccountSettings}
+          >
+            <Text
+              variant="smallPlus"
+              styles={{
+                root: { lineHeight: "1.4", color: theme.semanticColors.primaryButtonBackground },
+              }}
+            >
+              Sign in to sync layouts across multiple devices, and share them with team members.
+            </Text>
+            <IconButton
+              aria-label="Dismiss"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSignInPrompt(false);
+              }}
+              iconProps={{ iconName: "Clear" }}
+              styles={{
+                icon: {
+                  height: 20,
+                  color: theme.semanticColors.bodyText,
+                },
+              }}
+            />
+          </Stack>
         )}
         {layoutDebug?.syncNow && (
           <Stack
