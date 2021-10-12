@@ -5,10 +5,8 @@ import {
   DefaultButton,
   IconBase,
   IconButton,
-  Link,
   Spinner,
   Stack,
-  Text,
   Toggle,
   useTheme,
 } from "@fluentui/react";
@@ -20,6 +18,7 @@ import { useToasts } from "react-toast-notifications";
 import { useMountedState } from "react-use";
 import useAsyncFn from "react-use/lib/useAsyncFn";
 
+import SignInPrompt from "@foxglove/studio-base/components/LayoutBrowser/SignInPrompt";
 import { useUnsavedChangesPrompt } from "@foxglove/studio-base/components/LayoutBrowser/UnsavedChangesPrompt";
 import { SidebarContent } from "@foxglove/studio-base/components/SidebarContent";
 import { useTooltip } from "@foxglove/studio-base/components/Tooltip";
@@ -32,7 +31,6 @@ import {
 import { PanelsState } from "@foxglove/studio-base/context/CurrentLayoutContext/actions";
 import { useLayoutManager } from "@foxglove/studio-base/context/LayoutManagerContext";
 import LayoutStorageDebuggingContext from "@foxglove/studio-base/context/LayoutStorageDebuggingContext";
-import { useWorkspace } from "@foxglove/studio-base/context/WorkspaceContext";
 import useCallbackWithToast from "@foxglove/studio-base/hooks/useCallbackWithToast";
 import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
 import { usePrompt } from "@foxglove/studio-base/hooks/usePrompt";
@@ -57,7 +55,6 @@ export default function LayoutBrowser({
   const layoutManager = useLayoutManager();
   const prompt = usePrompt();
   const analytics = useAnalytics();
-  const { openAccountSettings } = useWorkspace();
   const confirm = useConfirm();
   const { unsavedChangesPrompt, openUnsavedChangesPrompt } = useUnsavedChangesPrompt();
 
@@ -451,48 +448,7 @@ export default function LayoutBrowser({
           )}
         </Stack.Item>
         <div style={{ flexGrow: 1 }} />
-        {showSignInPrompt && (
-          <Stack
-            horizontal
-            verticalAlign="center"
-            styles={{
-              root: {
-                backgroundColor: theme.palette.themeLighterAlt,
-                position: "sticky",
-                bottom: 0,
-              },
-            }}
-            tokens={{
-              padding: theme.spacing.m,
-              childrenGap: theme.spacing.m,
-            }}
-          >
-            <Text variant="smallPlus" styles={{ root: { lineHeight: "1.4" } }}>
-              <Link
-                onClick={openAccountSettings}
-                styles={{ root: { color: "inherit", textDecoration: "underline" } }}
-              >
-                Sign in
-              </Link>{" "}
-              to sync layouts across multiple devices, and share them with team members.
-            </Text>
-            <IconBase
-              aria-label="Dismiss"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSignInPrompt(false);
-              }}
-              iconName="Clear"
-              styles={{
-                root: {
-                  cursor: "pointer",
-                  fontSize: theme.fonts.small.fontSize,
-                  marginRight: theme.spacing.s2,
-                },
-              }}
-            />
-          </Stack>
-        )}
+        {showSignInPrompt && <SignInPrompt onDismiss={() => setShowSignInPrompt(false)} />}
         {layoutDebug?.syncNow && (
           <Stack
             styles={{
