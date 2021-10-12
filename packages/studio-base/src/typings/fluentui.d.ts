@@ -24,6 +24,7 @@ declare global {
     | "Clear"
     | "ClearSelection"
     | "ClipboardList"
+    | "CloudOfflineFilled"
     | "CodeEdit"
     | "Cog"
     | "Contact"

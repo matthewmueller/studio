@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 import { ThemeProvider as FluentThemeProvider } from "@fluentui/react";
 import {
+  CloudOffline24Filled,
   Next20Filled,
   Next20Regular,
   Pause20Filled,
@@ -48,6 +49,7 @@ const icons: {
   Clear: <Icons.ClearIcon />,
   ClearSelection: <Icons.ClearSelectionIcon />,
   ClipboardList: <Icons.ClipboardListIcon />,
+  CloudOfflineFilled: <CloudOffline24Filled />,
   CodeEdit: <Icons.CodeEditIcon />,
   Cog: <CogIcon />,
   Contact: <Icons.ContactIcon />,

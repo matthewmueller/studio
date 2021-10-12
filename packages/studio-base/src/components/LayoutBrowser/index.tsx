@@ -1,7 +1,17 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
-import { DefaultButton, IconButton, Spinner, Stack, Text, Toggle, useTheme } from "@fluentui/react";
+import {
+  DefaultButton,
+  IconBase,
+  IconButton,
+  Link,
+  Spinner,
+  Stack,
+  Text,
+  Toggle,
+  useTheme,
+} from "@fluentui/react";
 import { CloudOffline24Filled } from "@fluentui/react-icons";
 import { partition } from "lodash";
 import moment from "moment";
@@ -366,7 +376,12 @@ export default function LayoutBrowser({
       noPadding
       trailingItems={[
         (layouts.loading || isBusy) && <Spinner key="spinner" />,
-        !isOnline && <CloudOffline24Filled primaryFill={theme.palette.themeLighterAlt} />,
+        !isOnline && (
+          <IconBase
+            iconName="CloudOfflineFilled"
+            styles={{ root: { color: theme.palette.themeLighterAlt } }}
+          />
+        ),
         <IconButton
           key="add-layout"
           elementRef={createLayoutTooltip.ref}
@@ -441,41 +456,37 @@ export default function LayoutBrowser({
             verticalAlign="center"
             styles={{
               root: {
-                backgroundColor: theme.semanticColors.buttonBackgroundHovered,
+                backgroundColor: theme.palette.themeLighterAlt,
                 position: "sticky",
                 bottom: 0,
-                cursor: "pointer",
-
-                ":hover, :focus": {
-                  backgroundColor: theme.semanticColors.buttonBackgroundPressed,
-                },
               },
             }}
             tokens={{
               padding: theme.spacing.m,
               childrenGap: theme.spacing.m,
             }}
-            onClick={openAccountSettings}
           >
-            <Text
-              variant="smallPlus"
-              styles={{
-                root: { lineHeight: "1.4", color: theme.semanticColors.primaryButtonBackground },
-              }}
-            >
-              Sign in to sync layouts across multiple devices, and share them with team members.
+            <Text variant="smallPlus" styles={{ root: { lineHeight: "1.4" } }}>
+              <Link
+                onClick={openAccountSettings}
+                styles={{ root: { color: "inherit", textDecoration: "underline" } }}
+              >
+                Sign in
+              </Link>{" "}
+              to sync layouts across multiple devices, and share them with team members.
             </Text>
-            <IconButton
+            <IconBase
               aria-label="Dismiss"
               onClick={(e) => {
                 e.stopPropagation();
                 setShowSignInPrompt(false);
               }}
-              iconProps={{ iconName: "Clear" }}
+              iconName="Clear"
               styles={{
-                icon: {
-                  height: 20,
-                  color: theme.semanticColors.bodyText,
+                root: {
+                  cursor: "pointer",
+                  fontSize: theme.fonts.small.fontSize,
+                  marginRight: theme.spacing.s2,
                 },
               }}
             />
