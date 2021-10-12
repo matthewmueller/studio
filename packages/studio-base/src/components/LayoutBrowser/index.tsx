@@ -12,7 +12,6 @@ import {
   Toggle,
   useTheme,
 } from "@fluentui/react";
-import { CloudOffline24Filled } from "@fluentui/react-icons";
 import { partition } from "lodash";
 import moment from "moment";
 import path from "path";
@@ -366,9 +365,11 @@ export default function LayoutBrowser({
 
   const layoutDebug = useContext(LayoutStorageDebuggingContext);
   const supportsSignIn = useContext(ConsoleApiContext) != undefined;
-  const [showSignInPrompt, setShowSignInPrompt] = useState(
+
+  const [showSignInPrompt, setShowSignInPrompt] = useState<boolean>(
     supportsSignIn && !layoutManager.supportsSharing,
   );
+
   return (
     <SidebarContent
       title="Layouts"
