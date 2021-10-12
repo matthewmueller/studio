@@ -12,7 +12,6 @@ import {
 import NotificationModal from "@foxglove/studio-base/components/NotificationModal";
 import ModalContext from "@foxglove/studio-base/context/ModalContext";
 import { usePlayerSelection } from "@foxglove/studio-base/context/PlayerSelectionContext";
-import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
 import { PlayerPresence, PlayerProblem } from "@foxglove/studio-base/players/types";
 import { colors } from "@foxglove/studio-base/util/sharedStyleConstants";
 
@@ -36,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ConnectionList(): JSX.Element {
-  const { selectSource, selectedSource, availableSources } = usePlayerSelection();
-  const confirm = useConfirm();
+  const { selectSource, selectedSource, availableSources, setPlayer } = usePlayerSelection();
   const modalHost = useContext(ModalContext);
   const styles = useStyles();
 
@@ -46,26 +44,6 @@ export default function ConnectionList(): JSX.Element {
   const playerName = useMessagePipeline(selectPlayerName);
 
   const theme = useTheme();
-
-  const onSourceClick = useCallback(
-    (source: string) => {
-      /*
-      // fixme - use different source click handler for disabled sources
-      if (source.disabledReason != undefined) {
-        void confirm({
-          title: "Unsupported Connection",
-          prompt: source.disabledReason,
-          variant: "primary",
-          cancel: false,
-        });
-        return;
-      }
-      */
-
-      selectSource(source);
-    },
-    [confirm, selectSource],
-  );
 
   const showProblemModal = useCallback(
     (problem: PlayerProblem) => {
@@ -83,17 +61,27 @@ export default function ConnectionList(): JSX.Element {
     },
     [modalHost],
   );
-  const dataSourceUi = useMemo(() => {
-    if (!selectedSource) {
-      return;
-    }
 
-    return selectedSource.ui();
-  }, [selectedSource]);
+  const DataSourceUi = useMemo(() => {
+    return selectedSource?.ui;
+  }, [selectedSource?.ui]);
+
+  if (selectedSource) {
+    return (
+      <>
+        <div>
+          <Text style={{ cursor: "pointer" }} onClick={() => selectSource("")}>
+            &lt;&nbsp;/&nbsp;
+          </Text>
+          <Text>{selectedSource?.displayName}</Text>
+        </div>
+        {DataSourceUi && <DataSourceUi onPlayer={setPlayer} />}
+      </>
+    );
+  }
 
   return (
     <>
-      {dataSourceUi}
       <Text
         block
         styles={{ root: { color: theme.palette.neutralTertiary, marginBottom: theme.spacing.l1 } }}
@@ -122,7 +110,7 @@ export default function ConnectionList(): JSX.Element {
                 iconName,
                 styles: { root: { "& span": { verticalAlign: "baseline" } } },
               }}
-              onClick={() => onSourceClick(source.id)}
+              onClick={() => selectSource(source.id)}
             >
               {source.displayName}
               {source.badgeText && <span className={styles.badge}>{source.badgeText}</span>}

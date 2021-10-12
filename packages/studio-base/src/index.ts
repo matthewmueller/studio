@@ -32,7 +32,7 @@ export { default as NativeAppMenuContext } from "./context/NativeAppMenuContext"
 export type { NativeAppMenu, NativeAppMenuEvent } from "./context/NativeAppMenuContext";
 export { default as NativeWindowContext } from "./context/NativeWindowContext";
 export type { NativeWindow } from "./context/NativeWindowContext";
-export type { PlayerSourceDefinition } from "./context/PlayerSelectionContext";
+export type { DataSource } from "./context/PlayerSelectionContext";
 export { default as ThemeProvider } from "./theme/ThemeProvider";
 export { default as installDevtoolsFormatters } from "./util/installDevtoolsFormatters";
 export { default as overwriteFetch } from "./util/overwriteFetch";
@@ -51,3 +51,4 @@ export { default as GlobalCss } from "./components/GlobalCss";
 export { default as CurrentUserContext } from "./context/CurrentUserContext";
 export type { User } from "./context/CurrentUserContext";
 export { default as DeviceCodeDialog } from "./components/DeviceCodeDialog";
+export { default as Ros1LocalBag } from "./dataSources/Ros1LocalBag";

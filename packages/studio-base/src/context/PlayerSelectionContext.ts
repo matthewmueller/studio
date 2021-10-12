@@ -4,6 +4,12 @@
 
 import { createContext, useContext } from "react";
 
+import { Player } from "@foxglove/studio-base/players/types";
+
+type Props = {
+  onPlayer: (player: Player) => void;
+};
+
 export type DataSource = {
   id: string;
   displayName: string;
@@ -12,7 +18,10 @@ export type DataSource = {
   badgeText?: string;
 
   // Return the UI element for the data source
-  ui: () => JSX.Element;
+  ui: (props: Props) => JSX.Element;
+
+  // initialize a player given some arguments
+  initialize: (args?: Record<string, unknown>) => Player | undefined;
 };
 
 export type SourceSelection = {
@@ -31,11 +40,15 @@ export interface PlayerSelection {
 
   /** List of available data sources */
   availableSources: DataSource[];
+
+  /** Set the active player */
+  setPlayer: (player: Player) => void;
 }
 
 const PlayerSelectionContext = createContext<PlayerSelection>({
   selectSource: () => {},
   availableSources: [],
+  setPlayer: () => {},
 });
 
 export function usePlayerSelection(): PlayerSelection {

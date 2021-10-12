@@ -8,6 +8,8 @@ import { useNativeAppMenu } from "@foxglove/studio-base/context/NativeAppMenuCon
 import { usePlayerSelection } from "@foxglove/studio-base/context/PlayerSelectionContext";
 
 // NativeFileMenuPlayerSelection adds available player selection items to the apps native OS menubar
+// fixme - selecting the source now needs to display the UI element/sidebar
+// This should be done where?
 export function NativeFileMenuPlayerSelection(): ReactElement {
   const { selectSource, availableSources } = usePlayerSelection();
 
@@ -19,14 +21,14 @@ export function NativeFileMenuPlayerSelection(): ReactElement {
     }
 
     for (const item of availableSources) {
-      nativeAppMenu.addFileEntry(item.name, () => {
-        selectSource(item);
+      nativeAppMenu.addFileEntry(item.displayName, () => {
+        selectSource(item.id);
       });
     }
 
     return () => {
       for (const item of availableSources) {
-        nativeAppMenu.removeFileEntry(item.name);
+        nativeAppMenu.removeFileEntry(item.displayName);
       }
     };
   }, [availableSources, nativeAppMenu, selectSource]);
