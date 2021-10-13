@@ -17,8 +17,12 @@ import {
 import * as Icons from "@fluentui/react-icons-mdl2";
 import { registerIcons, unregisterIcons } from "@fluentui/style-utilities";
 import CogIcon from "@mdi/svg/svg/cog.svg";
+import CrosshairsGpsIcon from "@mdi/svg/svg/crosshairs-gps.svg";
 import DatabaseIcon from "@mdi/svg/svg/database.svg";
 import DragIcon from "@mdi/svg/svg/drag.svg";
+import MenuDownIcon from "@mdi/svg/svg/menu-down.svg";
+import MenuLeftIcon from "@mdi/svg/svg/menu-left.svg";
+import CompassOutlineIcon from "@mdi/svg/svg/navigation.svg";
 import PlusCircleOutlineIcon from "@mdi/svg/svg/plus-circle-outline.svg";
 import { useLayoutEffect, useState } from "react";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
@@ -50,8 +54,10 @@ const icons: {
   ClipboardList: <Icons.ClipboardListIcon />,
   CodeEdit: <Icons.CodeEditIcon />,
   Cog: <CogIcon />,
+  CompassOutline: <CompassOutlineIcon />,
   Contact: <Icons.ContactIcon />,
   Copy: <Icons.CopyIcon />,
+  CrosshairsGps: <CrosshairsGpsIcon />,
   Database: <DatabaseIcon />,
   DataManagementSettings: <Icons.DataManagementSettingsIcon />,
   Delete: <Icons.DeleteIcon />,
@@ -70,6 +76,8 @@ const icons: {
   LocationDot: <Icons.LocationDotIcon />,
   Loop: <LoopIcon strokeWidth={1.375} />,
   LoopFilled: <LoopIcon strokeWidth={1.875} />,
+  MenuDown: <MenuDownIcon />,
+  MenuLeft: <MenuLeftIcon />,
   More: <Icons.MoreIcon />,
   MoreVertical: <Icons.MoreVerticalIcon />,
   Next: <Next20Regular />,
