@@ -17,10 +17,14 @@ import {
 import * as Icons from "@fluentui/react-icons-mdl2";
 import { registerIcons, unregisterIcons } from "@fluentui/style-utilities";
 import BugIcon from "@mdi/svg/svg/bug.svg";
+import ArrowDownIcon from "@mdi/svg/svg/chevron-down.svg";
+import ArrowUpIcon from "@mdi/svg/svg/chevron-up.svg";
+import CloseIcon from "@mdi/svg/svg/close.svg";
 import CogIcon from "@mdi/svg/svg/cog.svg";
 import CrosshairsGpsIcon from "@mdi/svg/svg/crosshairs-gps.svg";
 import DatabaseIcon from "@mdi/svg/svg/database.svg";
 import DragIcon from "@mdi/svg/svg/drag.svg";
+import SearchIcon from "@mdi/svg/svg/magnify.svg";
 import MenuDownIcon from "@mdi/svg/svg/menu-down.svg";
 import MenuLeftIcon from "@mdi/svg/svg/menu-left.svg";
 import CompassOutlineIcon from "@mdi/svg/svg/navigation.svg";
@@ -42,6 +46,8 @@ const icons: {
 } = {
   Add: <Icons.AddIcon />,
   AddIn: <Icons.AddInIcon />,
+  ArrowDown: <ArrowDownIcon />,
+  ArrowUp: <ArrowUpIcon />,
   Blockhead: <BlockheadIcon />,
   BlockheadFilled: <BlockheadFilledIcon />,
   Bug: <BugIcon />,
@@ -56,6 +62,7 @@ const icons: {
   Clear: <Icons.ClearIcon />,
   ClearSelection: <Icons.ClearSelectionIcon />,
   ClipboardList: <Icons.ClipboardListIcon />,
+  Close: <CloseIcon />,
   CodeEdit: <Icons.CodeEditIcon />,
   Cog: <CogIcon />,
   CompassOutline: <CompassOutlineIcon />,
@@ -100,6 +107,7 @@ const icons: {
   RemoveFromTrash: <Icons.RemoveFromTrashIcon />,
   Rename: <Icons.RenameIcon />,
   Ruler: <RulerIcon />,
+  Search: <SearchIcon />,
   Settings: <Settings20Regular />,
   SettingsFilled: <Settings20Filled />,
   Share: <Icons.ShareIcon />,
