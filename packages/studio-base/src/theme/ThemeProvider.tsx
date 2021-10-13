@@ -17,6 +17,8 @@ import {
 import * as Icons from "@fluentui/react-icons-mdl2";
 import { registerIcons, unregisterIcons } from "@fluentui/style-utilities";
 import ArrowCollapseIcon from "@mdi/svg/svg/arrow-collapse.svg";
+import ArrowLeftRightIcon from "@mdi/svg/svg/arrow-left-right.svg";
+import ArrowUpDownIcon from "@mdi/svg/svg/arrow-up-down.svg";
 import BugIcon from "@mdi/svg/svg/bug.svg";
 import CameraControlIcon from "@mdi/svg/svg/camera-control.svg";
 import ArrowDownIcon from "@mdi/svg/svg/chevron-down.svg";
@@ -27,12 +29,14 @@ import CrosshairsGpsIcon from "@mdi/svg/svg/crosshairs-gps.svg";
 import CursorDefaultIcon from "@mdi/svg/svg/cursor-default.svg";
 import DatabaseIcon from "@mdi/svg/svg/database.svg";
 import DragIcon from "@mdi/svg/svg/drag.svg";
+import FitToPageIcon from "@mdi/svg/svg/fit-to-page-outline.svg";
 import SearchIcon from "@mdi/svg/svg/magnify.svg";
 import MenuDownIcon from "@mdi/svg/svg/menu-down.svg";
 import MenuLeftIcon from "@mdi/svg/svg/menu-left.svg";
 import CompassOutlineIcon from "@mdi/svg/svg/navigation.svg";
 import PencilIcon from "@mdi/svg/svg/pencil.svg";
 import PlusCircleOutlineIcon from "@mdi/svg/svg/plus-circle-outline.svg";
+import ServiceIcon from "@mdi/svg/svg/rectangle-outline.svg";
 import TopicIcon from "@mdi/svg/svg/rhombus.svg";
 import RulerIcon from "@mdi/svg/svg/ruler.svg";
 import Video3dIcon from "@mdi/svg/svg/video-3d.svg";
@@ -53,7 +57,9 @@ const icons: {
   AddIn: <Icons.AddInIcon />,
   ArrowCollapse: <ArrowCollapseIcon />,
   ArrowDown: <ArrowDownIcon />,
+  ArrowLeftRight: <ArrowLeftRightIcon />,
   ArrowUp: <ArrowUpIcon />,
+  ArrowUpDown: <ArrowUpDownIcon />,
   Blockhead: <BlockheadIcon />,
   BlockheadFilled: <BlockheadFilledIcon />,
   Bug: <BugIcon />,
@@ -88,6 +94,7 @@ const icons: {
   Error: <Icons.ErrorIcon />,
   ErrorBadge: <Icons.ErrorBadgeIcon />,
   FileASPX: <Icons.FileASPXIcon />,
+  FitToPage: <FitToPageIcon />,
   FiveTileGrid: <Icons.FiveTileGridIcon />,
   Flow: <Icons.FlowIcon />,
   GenericScan: <Icons.GenericScanIcon />,
@@ -117,6 +124,7 @@ const icons: {
   Rename: <Icons.RenameIcon />,
   Ruler: <RulerIcon />,
   Search: <SearchIcon />,
+  Service: <ServiceIcon />,
   Settings: <Settings20Regular />,
   SettingsFilled: <Settings20Filled />,
   Share: <Icons.ShareIcon />,
