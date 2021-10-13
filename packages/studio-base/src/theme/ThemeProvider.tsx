@@ -16,19 +16,24 @@ import {
 } from "@fluentui/react-icons";
 import * as Icons from "@fluentui/react-icons-mdl2";
 import { registerIcons, unregisterIcons } from "@fluentui/style-utilities";
+import ArrowCollapseIcon from "@mdi/svg/svg/arrow-collapse.svg";
 import BugIcon from "@mdi/svg/svg/bug.svg";
+import CameraControlIcon from "@mdi/svg/svg/camera-control.svg";
 import ArrowDownIcon from "@mdi/svg/svg/chevron-down.svg";
 import ArrowUpIcon from "@mdi/svg/svg/chevron-up.svg";
 import CloseIcon from "@mdi/svg/svg/close.svg";
 import CogIcon from "@mdi/svg/svg/cog.svg";
 import CrosshairsGpsIcon from "@mdi/svg/svg/crosshairs-gps.svg";
+import CursorDefaultIcon from "@mdi/svg/svg/cursor-default.svg";
 import DatabaseIcon from "@mdi/svg/svg/database.svg";
 import DragIcon from "@mdi/svg/svg/drag.svg";
 import SearchIcon from "@mdi/svg/svg/magnify.svg";
 import MenuDownIcon from "@mdi/svg/svg/menu-down.svg";
 import MenuLeftIcon from "@mdi/svg/svg/menu-left.svg";
 import CompassOutlineIcon from "@mdi/svg/svg/navigation.svg";
+import PencilIcon from "@mdi/svg/svg/pencil.svg";
 import PlusCircleOutlineIcon from "@mdi/svg/svg/plus-circle-outline.svg";
+import TopicIcon from "@mdi/svg/svg/rhombus.svg";
 import RulerIcon from "@mdi/svg/svg/ruler.svg";
 import Video3dIcon from "@mdi/svg/svg/video-3d.svg";
 import { useLayoutEffect, useState } from "react";
@@ -46,11 +51,13 @@ const icons: {
 } = {
   Add: <Icons.AddIcon />,
   AddIn: <Icons.AddInIcon />,
+  ArrowCollapse: <ArrowCollapseIcon />,
   ArrowDown: <ArrowDownIcon />,
   ArrowUp: <ArrowUpIcon />,
   Blockhead: <BlockheadIcon />,
   BlockheadFilled: <BlockheadFilledIcon />,
   Bug: <BugIcon />,
+  CameraControl: <CameraControlIcon />,
   Cancel: <Icons.CancelIcon />,
   CheckMark: <Icons.CheckMarkIcon />,
   ChevronDown: <Icons.ChevronDownIcon />,
@@ -69,6 +76,7 @@ const icons: {
   Contact: <Icons.ContactIcon />,
   Copy: <Icons.CopyIcon />,
   CrosshairsGps: <CrosshairsGpsIcon />,
+  CursorDefault: <CursorDefaultIcon />,
   Database: <DatabaseIcon />,
   DataManagementSettings: <Icons.DataManagementSettingsIcon />,
   Delete: <Icons.DeleteIcon />,
@@ -97,6 +105,7 @@ const icons: {
   OpenFolder: <Icons.OpenFolderHorizontalIcon />,
   Pause: <Pause20Regular />,
   PauseFilled: <Pause20Filled />,
+  Pencil: <PencilIcon />,
   Play: <Play20Regular />,
   PlayFilled: <Play20Filled />,
   PlusCircleOutline: <PlusCircleOutlineIcon />,
@@ -114,6 +123,7 @@ const icons: {
   SingleColumnEdit: <Icons.SingleColumnEditIcon />,
   StatusCircleInner: <Icons.StatusCircleInnerIcon />,
   TestBeakerSolid: <Icons.TestBeakerSolidIcon />,
+  Topic: <TopicIcon />,
   Undo: <Icons.UndoIcon />,
   Upload: <Icons.UploadIcon />,
   Variable2: <Icons.Variable2Icon />,
