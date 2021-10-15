@@ -18,6 +18,7 @@ import { useToasts } from "react-toast-notifications";
 import { useMountedState } from "react-use";
 import useAsyncFn from "react-use/lib/useAsyncFn";
 
+import { AppSetting } from "@foxglove/studio-base/AppSetting";
 import SignInPrompt from "@foxglove/studio-base/components/LayoutBrowser/SignInPrompt";
 import { useUnsavedChangesPrompt } from "@foxglove/studio-base/components/LayoutBrowser/UnsavedChangesPrompt";
 import { SidebarContent } from "@foxglove/studio-base/components/SidebarContent";
@@ -34,6 +35,7 @@ import LayoutStorageDebuggingContext from "@foxglove/studio-base/context/LayoutS
 import useCallbackWithToast from "@foxglove/studio-base/hooks/useCallbackWithToast";
 import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
 import { usePrompt } from "@foxglove/studio-base/hooks/usePrompt";
+import { useAppConfigurationValue } from "@foxglove/studio-base/index";
 import { defaultPlaybackConfig } from "@foxglove/studio-base/providers/CurrentLayoutProvider/reducers";
 import { AppEvent } from "@foxglove/studio-base/services/IAnalytics";
 import { Layout, layoutIsShared } from "@foxglove/studio-base/services/ILayoutStorage";
@@ -363,8 +365,12 @@ export default function LayoutBrowser({
   const layoutDebug = useContext(LayoutStorageDebuggingContext);
   const supportsSignIn = useContext(ConsoleApiContext) != undefined;
 
+  const [hideSignInPrompt = false] = useAppConfigurationValue<boolean>(
+    AppSetting.HIDE_SIGN_IN_PROMPT,
+  );
+
   const [showSignInPrompt, setShowSignInPrompt] = useState<boolean>(
-    supportsSignIn && !layoutManager.supportsSharing,
+    supportsSignIn && !layoutManager.supportsSharing && hideSignInPrompt,
   );
 
   return (
